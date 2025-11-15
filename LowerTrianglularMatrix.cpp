@@ -44,29 +44,30 @@ LowerTriangularMatrix LowerTriangularMatrix::operator*(const LowerTriangularMatr
     return result;
 }
 bool LowerTriangularMatrix::operator==(const LowerTriangularMatrix& other) const {
-    if (rows != other.rows) {
+    if(rows!=other.rows||cols!=other.cols){
         return false;
     }
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j <= i; ++j) { 
-            if (this->getElement(i, j) != other.getElement(i, j)) {
-                return false;  
-            }
-        }
-    }
-    return true;
+    return this->elements==other.elements;
 }
 double LowerTriangularMatrix::getElement(const int row, const int col) const {
     if (row < 0 || row >= rows || col < 0 || col >= cols) {
         cout<<"out of range"<<endl;
     }        
-    return elements[row*cols+col];
+    if (row < col) {
+        return 0.0;
+    }
+    int ind = (row * (row + 1)) / 2 + col;
+    return elements[ind];
 }
 void LowerTriangularMatrix::setElement(const int row, const int col, const double value) {
     if (row < 0 || row >= rows || col < 0 || col >= cols) {
         cout<<"out of range"<<endl;
     }
-    else {
-        elements[(row*(row+1))/2 + col]=value;
+    if(row<col && value != 0.0){
+        cout<<"upper tri is zero"<<endl;
+    }
+    if (row>=col){
+        int ind = (row * (row + 1)) / 2 + col;
+        elements[ind] = value;
     }
 }

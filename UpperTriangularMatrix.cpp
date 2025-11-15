@@ -47,26 +47,33 @@ bool UpperTriangularMatrix::operator==(const UpperTriangularMatrix& other)const{
     if(rows!=other.rows||cols!=other.cols){
         return false;
     }
-    for(int i=0;i<rows;i++){
-        for(int j=i;j<cols;j++){
-            if(this->getElement(i,j)!=other.getElement(i,j)){
-                return false;
-            }
-        }
-    }
-    return true;
+    return this->elements==other.elements;
 }
 double UpperTriangularMatrix::getElement(const int row,const int col)const{
     if(row<0||row>=rows||col<0||col>=cols){
         cout<<"out of range"<<endl;
+        return 0.0;
     }
-    return elements[(rows*row)+col +(row*(row+1))/2];
+    else{
+        if(row>col){
+            return 0.0;
+        }
+        int ind = (row* cols) + col - (row * (row + 1)) / 2;
+        return elements[ind];
+    }
+    
 }
 void UpperTriangularMatrix::setElement(const int row,const int col,const double value){
     if(row<0||row>=rows||col<0||col>=cols){
         cout<<"out of range"<<endl;
+        return;
     }
-    else{
-        elements[(rows*row)+col +(row*(row+1))/2]=value;
+    if(row>col && value != 0.0){
+        cout<<"lower tri is zero"<<endl;
+        return;
+    }
+    if (row<=col){
+        int ind = (row* cols) + col - (row * (row + 1)) / 2;
+        elements[ind] = value;
     }
 }
